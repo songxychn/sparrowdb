@@ -12,6 +12,7 @@
         <module>sparrow-core</module>
         <module>sparrow-server</module>
         <module>sparrow-api</module>
+        <module>sparrow-client-spring-boot-starter</module>
     </modules>
 
     <properties>
