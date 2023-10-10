@@ -1,0 +1,43 @@
+syntax = "proto3";
+option java_multiple_files = false;
+option java_package = "com.baizhukui.sparrowdb.api";
+option java_outer_classname = "SparrowApi";
+
+message PutRequest {
+  string dbName = 1;
+  string key = 2;
+  bytes value = 3;
+}
+
+message PutResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message GetRequest {
+  string dbName = 1;
+  string key = 2;
+}
+
+message GetResponse {
+  bool success = 1;
+  string msg = 2;
+  bytes value = 3;
+  bool exist = 4;
+}
+
+message DeleteRequest {
+  string dbName = 1;
+  string key = 2;
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+service SparrowService {
+  rpc put(PutRequest) returns (PutResponse) {}
+  rpc get(GetRequest) returns (GetResponse) {}
+  rpc delete(DeleteRequest) returns (DeleteResponse) {}
+}

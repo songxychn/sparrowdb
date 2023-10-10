@@ -65,8 +65,9 @@ public class DataBase implements AutoCloseable {
     }
 
     public synchronized void open() throws IOException {
-        if (dataFile != null) {
-            throw new IllegalStateException("该数据库已经处于 open 状态");
+        if (getStatus() == Status.OPEN) {
+            // 数据库已经处于 open 状态
+            return;
         }
 
         if (Files.notExists(directory)) {
@@ -126,6 +127,9 @@ public class DataBase implements AutoCloseable {
     }
 
     public synchronized void put(String key, byte[] value) throws IOException {
+        if (value == null) {
+            throw new NullPointerException("value 不得为 null");
+        }
         Record record = new Record(key, value, Record.Type.PUT);
         byte[] bytes = record.encode();
 
@@ -212,6 +216,19 @@ public class DataBase implements AutoCloseable {
         dataFile = new RandomAccessFile(newFile, "rw");
 
         log.info("数据文件整理完毕");
+    }
+
+    public synchronized Status getStatus() {
+        if (dataFile == null){
+            return Status.CLOSED;
+        } else {
+            return Status.OPEN;
+        }
+    }
+
+    public enum Status {
+        OPEN,
+        CLOSED;
     }
 
 }
